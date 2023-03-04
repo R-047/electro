@@ -15,31 +15,61 @@ let count = 0
 const fetchPowerGraph = async (req, res) => {
   
   res.setHeader("Content-Type", "text/event-stream")
-  
-  if(!interval){
-    interval = setInterval(async () => {
-      const date_filter = req.query.filter
-      const time = filteredDate(date_filter)
 
-      const values = await prisma.electro.findMany({
-        where: {
-          created_time: {
-            gte: time
-          },
-        },
-        select: {
-          power: true,
-          created_time: true
-        },
-      });
+
+  send(req, res)
+  
+  // if(!interval){
+  //   interval = setInterval(async () => {
+  //     const date_filter = req.query.filter
+  //     const time = filteredDate(date_filter)
+
+  //     const values = await prisma.electro.findMany({
+  //       where: {
+  //         created_time: {
+  //           gte: time
+  //         },
+  //       },
+  //       select: {
+  //         power: true,
+  //         created_time: true
+  //       },
+  //     });
 
       
-      console.log(`writing data to stream ${count}`)
-      count = count + 1
+  //     console.log(`writing data to stream ${count}`)
+  //     count = count + 1
 
-      res.write("data: "+JSON.stringify(JSON.parse(JSON.stringify(values)))+"\n\n")
-    }, 1000)       
-  } 
+  //     res.write("data: "+JSON.stringify(JSON.parse(JSON.stringify(values)))+"\n\n")
+  //   }, 1000)       
+  // } 
+  
+}
+
+
+async function send (req, res) {
+  const date_filter = req.query.filter
+  const time = filteredDate(date_filter)
+
+  const values = await prisma.electro.findMany({
+    where: {
+      created_time: {
+        gte: time
+      },
+    },
+    select: {
+      power: true,
+      created_time: true
+    },
+  });
+
+  
+  console.log(`writing data to stream ${count}`)
+  count = count + 1
+
+  res.write("data: "+JSON.stringify(JSON.parse(JSON.stringify(values)))+"\n\n")
+
+  setTimeout(() => send(req, res), 1000)
   
 }
 
