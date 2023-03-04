@@ -10,6 +10,8 @@ const prisma = new PrismaClient()
 
 let interval = undefined
 
+let count = 0
+
 const fetchPowerGraph = async (req, res) => {
   
   res.setHeader("Content-Type", "text/event-stream")
@@ -31,8 +33,9 @@ const fetchPowerGraph = async (req, res) => {
         },
       });
 
-      console.log(values)
       
+      console.log(`writing data to stream ${count}`)
+      count = count + 1
 
       res.write("data: "+JSON.stringify(JSON.parse(JSON.stringify(values)))+"\n\n")
     }, 1000)       
