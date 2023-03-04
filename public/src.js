@@ -17,7 +17,7 @@ createApp({
         this.chart_element = document.getElementById('power_graph')
         google.charts.load('current', {packages: ['corechart']});
         google.charts.setOnLoadCallback(this.drawChart);
-        let sse = new EventSource("http://localhost:3000/fetchPowerGraph?filter=LAST_30_MINS");
+        let sse = new EventSource("https://electro.onrender.com/fetchPowerGraph?filter=LAST_30_MINS");
         sse.onmessage = this.updateGraph
     },
     updated(){
