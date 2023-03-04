@@ -10,17 +10,34 @@ createApp({
             chart: null,
             chart_element: null,
             data: [["Time", "Power"]],
-            power: 0
+            power: 0,
+            sse: null,
+            options: null
         }
     },
     mounted() {
         this.chart_element = document.getElementById('power_graph')
         google.charts.load('current', {packages: ['corechart']});
         google.charts.setOnLoadCallback(this.drawChart);
-        let sse = new EventSource("https://electro.onrender.com/fetchPowerGraph?filter=LAST_30_MINS");
-        sse.onmessage = this.updateGraph
+        this.sse = new EventSource("https://electro.onrender.com/fetchPowerGraph?filter=LAST_30_MINS");
+        this.sse.onmessage = this.updateGraph
+        this.opitons = {
+            title: 'Power Consumption over time',
+            curveType: 'function',
+            legend: { position: 'bottom' },
+            hAxis: {
+                title: 'Time',
+                format: 'yyyy mm dd HH:mm',
+              },
+        };
     },
     updated(){
+        
+    },
+    destroyed(){
+        if(this.sse){
+            this.sse.close()
+        }
         
     },
 
@@ -32,19 +49,8 @@ createApp({
             })
             var data = google.visualization.arrayToDataTable(this.data);
 
-            var options = {
-                title: 'Power Consumption over time',
-                curveType: 'function',
-                legend: { position: 'bottom' },
-                hAxis: {
-                    title: 'Time',
-                    format: 'yyyy mm dd HH:mm',
-                  },
-            };
-
-            this.chart.draw(data, options);
+            this.chart.draw(data, this.options);
             console.log(this.data)
-            this.power = this.power + 1
         },
         
         drawChart(){
