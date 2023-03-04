@@ -1,7 +1,8 @@
 const { PrismaClient }  = require('@prisma/client')
 const crypto = require('crypto')
 const { Dayjs } = require('dayjs')
-const dayjs = require('dayjs')
+
+const {getCurrentTime} = require('../utils/date_time_helper')
 
 
 
@@ -24,7 +25,7 @@ const healthCheckDbWrite = async (req, res) => {
 		data: {
 		  test_string: req.params.string,
 		  slug: crypto.randomBytes(64).toString('hex'),
-		  created_time: dayjs().format()
+		  created_time: getCurrentTime()
 		},
 	})
 	// const test_strings = await prisma.test.findMany()

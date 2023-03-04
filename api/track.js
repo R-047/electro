@@ -1,7 +1,8 @@
 const { PrismaClient }  = require('@prisma/client')
 const { time } = require('console')
 const crypto = require('crypto')
-const dayjs = require('dayjs')
+const {getCurrentTime} = require('../utils/date_time_helper')
+
 
 const prisma = new PrismaClient()
 
@@ -15,7 +16,7 @@ const track = async (req, res) => {
 
     const energy = req.body.energy
 
-    await prisma.$connect()
+  await prisma.$connect()
 	await prisma.electro.create({
 		data: {
 		  slug: crypto.randomBytes(64).toString('hex'),
@@ -25,10 +26,11 @@ const track = async (req, res) => {
           energy: energy,
           power_factor: power_factor,
           active_power: active_power,
-          created_time: dayjs().format()
+          created_time: getCurrentTime()
 
 		},
-	})    
+	})
+
 	res.json({success: true})
 }
 

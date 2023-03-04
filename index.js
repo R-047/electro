@@ -25,7 +25,9 @@ app.use(express.static('public'));
 app.use('/healthCheck', require("./routes/healthCheckRoute").healthCheckRoute);
 app.use('/healthCheckRead', require("./routes/healthCheckRoute").healthCheckDbReadRoute);
 app.use('/healthCheckWrite', require("./routes/healthCheckRoute").healthCheckDbReadWriteRoute);
+
 app.use('/track', require("./routes/trackRoute"))
+app.use('/fetchPowerGraph', require("./routes/fetchPowerGraph"))
 
 
 

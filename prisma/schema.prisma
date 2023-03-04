@@ -14,7 +14,7 @@ model test {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
   slug     String    @unique
   test_string    String 
-  created_time    String
+  created_time DateTime
 }
 
 model electro {
@@ -26,5 +26,5 @@ model electro {
   energy     Float
   power_factor    Float?
   active_power    Float?
-  created_time    String
+  created_time    DateTime
 }
