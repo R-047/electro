@@ -44,10 +44,11 @@ createApp({
     methods: {
         updateGraph(response) {
             this.values = JSON.parse(response.data)
-            this.values.forEach(ele => {
-                this.data.push([ele.created_time, parseInt(ele.power)])
+
+            var coords = this.values.map(ele => {
+                [ele.created_time, parseInt(ele.power)]
             })
-            var data = google.visualization.arrayToDataTable(this.data);
+            var data = google.visualization.arrayToDataTable(this.data.concat(coords));
 
             this.chart.draw(data, this.options);
             console.log(this.data)
