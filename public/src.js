@@ -16,13 +16,13 @@ createApp({
         }
     },
     mounted() {
-        // const local_host = "http://localhost:3000"
+        // const host = "http://localhost:3000"
         const host = "https://electro.onrender.com"
         this.chart_element = document.getElementById('power_graph')
         google.charts.load('current', {packages: ['corechart']});
         
         google.charts.setOnLoadCallback(this.drawChart);
-        this.sse = new EventSource(`${local_host}/fetchPowerGraph?filter=LAST_30_MINS`);
+        this.sse = new EventSource(`${host}/fetchPowerGraph?filter=LAST_30_MINS`);
         this.sse.onmessage = this.updateGraph
         
     },
