@@ -45,6 +45,9 @@ createApp({
                 return [ele.created_time, parseInt(ele.power)]
             })
             var data = google.visualization.arrayToDataTable(this.data.concat(coords));
+            if (data.length <= 1){
+                return 
+            }
 
             var options = {
                 title: 'Power Consumption over time',
